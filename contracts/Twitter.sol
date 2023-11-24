@@ -3,8 +3,6 @@ pragma solidity >=0.6.12 <0.9.0;
 
 //make a twitter contract and add likes functionailty
 
-
-
 contract Twitter {
   
   struct tweets{
@@ -49,5 +47,13 @@ function unlikeTweet(address author, uint id) external {
   emit TweetUnliked(msg.sender, author, id, tweet[author][id].likes);
 }
 
+//function to calculate total tweet likes for the user
+function getTotalLikes(address user) public view returns(uint){
+  uint total = 0;
+  for(uint i = 0; i<tweet[user].length;i++ ){
+    total += tweet[user][i].likes;
+  }
+  return total;
+}
   
 }
