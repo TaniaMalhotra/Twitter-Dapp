@@ -3,8 +3,13 @@ import './App.css';
 import Header from'./components/Header';
 import InputArea from'./components/InputArea';
 import Tweets from'./components/Tweets';
+import React, {useState} from 'react';
 
-let all_tweets = [
+
+
+function App() {
+
+const [all_tweets, setTweets] = useState([
   {
     title:"title1",
     body:"body1"
@@ -17,14 +22,16 @@ let all_tweets = [
     title:"title3",
     body:"body3"
   }
-];
-
-function App() {
+]);
+  const OnDelete = (tweet) => 
+{
+  setTweets(all_tweets.filter(obj => {return obj!== tweet}));
+}
   return (
    <>
    <Header title = "tweets"/>
    <InputArea/>
-   <Tweets all_tweets = {all_tweets}/>
+   <Tweets all_tweets = {all_tweets} delete_ = {OnDelete}/>
    
    </>
   );
