@@ -10,27 +10,20 @@ import React, {useState} from 'react';
 function App() {
 
 const [all_tweets, setTweets] = useState([
-  {
-    title:"title1",
-    body:"body1"
-  },
-  {
-    title:"title2",
-    body:"body2"
-  },
-  {
-    title:"title3",
-    body:"body3"
-  }
+  
 ]);
   const OnDelete = (tweet) => 
 {
   setTweets(all_tweets.filter(obj => {return obj!== tweet}));
 }
+const OnSubmiting = (tweet) => 
+{
+  setTweets([...all_tweets, { title: tweet.title, body: tweet.body }]);
+}
   return (
    <>
    <Header title = "tweets"/>
-   <InputArea/>
+   <InputArea whensubmit={OnSubmiting}/>
    <Tweets all_tweets = {all_tweets} delete_ = {OnDelete}/>
    
    </>
