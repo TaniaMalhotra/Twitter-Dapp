@@ -26,6 +26,7 @@ function App() {
         Twitter.abi,
         deployedNetwork.address
       );
+      console.log(web3.eth)
       console.log(contract);
       setState({ web3: web3, contract: contract });
     }
@@ -62,8 +63,15 @@ const [all_tweets, setTweets] = useState([
 }
 const OnSubmiting = (tweet) => 
 {
+
   setTweets([...all_tweets, { title: tweet.title, body: tweet.body }]);
 }
+
+// const DisplayTweets = async() => {
+//   const { contract } = state;
+//   const data = await contract.methods.getTweets(address).call();
+
+// }
   return (
    <>
    <Header title = "tweets"/>
