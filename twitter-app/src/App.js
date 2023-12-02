@@ -13,7 +13,7 @@ function App() {
     web3: null,
     contract: null,
   });
-  //const [data, setData] = useState("nill");
+  const [currentAddress, setAddress] = useState("nill");
 
   useEffect(() => {
     const provider = new Web3.providers.HttpProvider("HTTP://127.0.0.1:7545");
@@ -26,33 +26,12 @@ function App() {
         Twitter.abi,
         deployedNetwork.address
       );
-      console.log(web3.eth)
-      console.log(contract);
+      const ac = await web3.eth.getAccounts();
+      setAddress(ac[1])
       setState({ web3: web3, contract: contract });
     }
     provider && template();
   }, []);
-
-  //read data
-  // useEffect(() => {
-  //   const { contract } = state;
-  //   async function readData() {
-  //     const data = await contract.methods.getter().call();
-  //     setData(data);
-  //   }
-  //   contract && readData();
-  // }, [state]);
-
-  //write data
-  // async function writeData() {
-  //   const { contract } = state;
-  //   const data = document.querySelector("#value").value;
-  //   await contract.methods
-  //     .storeTweet(data)
-  //     .send({ from: "0x1f4F90f9aA5779f2C1E190133C2c872944bDED1c" });
-  //   window.location.reload();
-  // }
-  // storeTweet
 
 const [all_tweets, setTweets] = useState([
   
@@ -61,21 +40,34 @@ const [all_tweets, setTweets] = useState([
 {
   setTweets(all_tweets.filter(obj => {return obj!== tweet}));
 }
-const OnSubmiting = (tweet) => 
-{
 
-  setTweets([...all_tweets, { title: tweet.title, body: tweet.body }]);
+async function OnSubmiting(tweet)
+{
+  const { contract } = state;
+  console.log(`in onsubmit function. Tweet to be stored is ${tweet}`);
+  await contract.methods.storeTweet(tweet).send({from:currentAddress, gas:10000000000});
+  DisplayTweets();
 }
 
-// const DisplayTweets = async() => {
-//   const { contract } = state;
-//   const data = await contract.methods.getTweets(address).call();
 
-// }
+const DisplayTweets = async() => {
+  console.log(`in display tweets`)
+  const { contract } = state;
+  if(contract){
+    const data = await contract.methods.getTweets(currentAddress).call();
+    setTweets(data);
+  }
+}
+
+useEffect(() => {
+  DisplayTweets();
+},[state]); 
+
   return (
    <>
    <Header title = "tweets"/>
    <InputArea whensubmit={OnSubmiting}/>
+   {/* <Tweets all_tweets = {all_tweets} delete_ = {OnDelete}/> */}
    <Tweets all_tweets = {all_tweets} delete_ = {OnDelete}/>
    
    </>
