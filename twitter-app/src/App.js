@@ -36,10 +36,6 @@ function App() {
 const [all_tweets, setTweets] = useState([
   
 ]);
-  const OnDelete = (tweet) => 
-{
-  setTweets(all_tweets.filter(obj => {return obj!== tweet}));
-}
 
 async function OnSubmiting(tweet)
 {
@@ -67,8 +63,7 @@ useEffect(() => {
    <>
    <Header title = "tweets"/>
    <InputArea whensubmit={OnSubmiting}/>
-   {/* <Tweets all_tweets = {all_tweets} delete_ = {OnDelete}/> */}
-   <Tweets all_tweets = {all_tweets} delete_ = {OnDelete}/>
+   <Tweets all_tweets = {all_tweets} />
    
    </>
   );
