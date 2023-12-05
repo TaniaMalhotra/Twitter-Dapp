@@ -37,6 +37,14 @@ const [all_tweets, setTweets] = useState([
   
 ]);
 
+
+async function IncLike(addres , id)
+{
+  const { contract } = state;
+  await contract.methods.likeTweet(addres, id).send({from:currentAddress, gas:10000000000});
+  window.location.reload();
+}
+
 async function OnSubmiting(tweet)
 {
   const { contract } = state;
@@ -63,7 +71,7 @@ useEffect(() => {
    <>
    <Header title = "tweets"/>
    <InputArea whensubmit={OnSubmiting}/>
-   <Tweets all_tweets = {all_tweets} />
+   <Tweets all_tweets = {all_tweets} IncLike = {IncLike} />
    
    </>
   );

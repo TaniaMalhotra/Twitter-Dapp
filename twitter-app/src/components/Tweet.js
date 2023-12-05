@@ -1,15 +1,13 @@
 import React from 'react'
 
-export default function Tweet({tweet}) {
-  const likeCount = 0;
-  
+export default function Tweet(props) {
   return (
     <div>
-      {console.log(tweet)}
-      <p>{tweet}</p>
-      <span>{likeCount}</span>
-      <button>Like tweet
+       <p>{props.tweet.content}</p>
+       <p>{props.tweet.likes}</p>
+      <button onClick = {() => props.IncLike(props.tweet.author, props.tweet.id)}>Like tweet
       </button>
     </div>
   )
 }
+

@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.6.12 <0.9.0;
+pragma solidity 0.5.1;
+pragma experimental ABIEncoderV2;
+
 
 interface IUser {
   struct user{
@@ -11,7 +13,7 @@ interface IUser {
 contract Twitter {
   
   struct tweets{
-  string content;
+  uint content;
   uint256 timestamp;
   address author;
   uint id;
@@ -20,12 +22,12 @@ contract Twitter {
 
 mapping(address => tweets[]) tweet;
 
-event TweetCreated(uint256 id, address author, string content, uint256 timestamp);
+event TweetCreated(uint256 id, address author, uint content, uint256 timestamp);
 event TweetLiked(address liker, address tweetAuthor, uint256 tweetId, uint256 newLikeCount);
 event TweetUnliked(address unliker, address tweetAuthor, uint256 tweetId, uint256 newLikeCount);
 
 IUser userContract;
-constructor(address UserContractAddress)
+constructor(address UserContractAddress) public
 {
   userContract = IUser(UserContractAddress);
 }
@@ -36,7 +38,7 @@ modifier onlyRegistered(){
   _;
 }
 //store tweets
-function storeTweet(string memory content) public onlyRegistered{
+function storeTweet(uint content) public onlyRegistered{
   tweets memory onetweet = tweets({
     content:content,
     timestamp: block.timestamp,
@@ -49,12 +51,18 @@ function storeTweet(string memory content) public onlyRegistered{
 }
 
 //get a particular tweet
-function getTweet(address author, uint id) public view returns(string memory){
+function getTweet(address author, uint id) public view returns(uint){
   return tweet[author][id].content;
 }
 
+function getTweets(address author) public view returns(tweets[] memory){
+  return tweet[author];
+}
+
+
+
 //like tweet
-function likeTweet(address author, uint id) external onlyRegistered {
+function likeTweet(address author, uint id) external onlyRegistered{
   tweet[author][id].likes++;
   emit TweetLiked(msg.sender, author, id, tweet[author][id].likes);
 }
@@ -76,3 +84,8 @@ function getTotalLikes(address user) public view returns(uint){
 }
   
 }
+
+
+
+
+
